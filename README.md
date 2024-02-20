@@ -3,83 +3,73 @@
 
 This project goal is to identify the chapters in an audiobook hosted on YouTube 🔎🕵🏻‍♂️📋
 
-# Example
+# Result Example
 ```
-Capítulo 1 	 0:15:09
-Capítulo 2 	 0:24:50
-Capítulo 3 	 0:33:07
-Capítulo 4 	 0:45:47
-Capítulo 5 	 0:52:30
+__________________
+Result for The Animal Farm
+https://www.youtube.com/watch?v=iosHzNmVYbA
+
+Chapter 1        0:00:07         Duration: 0:00:07
+Chapter 2        0:16:51         Duration: 0:16:43
+Chapter 3        0:33:05         Duration: 0:16:14
+Chapter 4        0:47:13         Duration: 0:14:07
+Chapter 5        0:57:48         Duration: 0:10:34
+Chapter 6        1:17:14         Duration: 0:19:26
+Chapter 7        1:34:49         Duration: 0:17:35
+Chapter 8        1:57:52         Duration: 0:23:03
+Chapter 9        2:22:48         Duration: 0:24:55
+Chapter 10       2:45:23         Duration: 0:22:34
+
+
+by https://github.com/ThisIsDjonathan/youtube-audiobook-chapter-identifier
+__________________
 ```
 
-# How I built this
+# How I Built This
 This is done in 3 steps:
-1. The `YoutubeVideoHandler.py` will download the YouTube content as a `.mp4`;
-2. Then the `AudioToTextHandler.py` will use the [OpenAI whisper](https://github.com/openai/whisper) to transcribe the audio to text;
-3. The last step is done by the `ChaperFinder.py` which will find where each chapter starts based on the result text from the step above.
+1. The `YoutubeVideoHelper.py` will download the YouTube content as a `.mp4`;
+2. Then the `AudioToTextHelper.py` will use the [OpenAI whisper](https://github.com/openai/whisper) to transcribe the audio to text;
+3. The last step is done by the `Audiobook.py` which will find where each chapter starts based on the result text from the step above.
 
-## YoutubeVideoHandler
-We are using the [pytube](https://github.com/pytube/pytube) library to download the Youtube data. 
-```
-youtube = YoutubeVideoHandler('https://www.youtube.com/watch?v=iosHzNmVYbA')
-youtube.download()
-```
+The script will create a folder inside the `./audiobooks/` directory for each audiobook.
 
-The `download()` function will create a new directory for the audiobook we're downloading
-
-
+This is the file structure:
 📦 youtube-audiobook-chapter-identifier<br>
-┣ 📂 data<br>
-┃ ┗ 📂 George Orwell - Animal Farm<br>
-┃   ┗ 📂 youtube-data <br>
-┃&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ 🎧 `George Orwell - Animal Farm.mp4`<br>
-┃   ┗ 📂 audio-to-text <br>
-┃&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ 🎧 `366.mp3`<br>
+┣ 📂 audiobooks<br>
+┃ ┗ 📂 Audio Book 1<br>
+┃&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ 🎧 `youtube-content.mp4`<br>
+┃&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ 📋 `audio-to-text.json`<br>
 
-## The Speech to Text 🗣️👂✍🏻
-The Alexa Skill is a Flash Briefing skill created in the [Alexa Developer Console](https://developer.amazon.com/alexa/console) that will consume our JSON feed API hosted on AWS.
-<br>These are the docs I used for reference:<br>
-- [Understand the Flash Briefing Skill](https://developer.amazon.com/en-US/docs/alexa/flashbriefing/understand-the-flash-briefing-skill-api.html)
-- [Flash Briefing Skill API Feed Reference](https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html)
-
-
-## Contributing 🤝
-### You can contribute by adding support for more languages! 🌎<br>
-
-#### Running the code
-Then let's run the code in your environment!
-First, install the Python dependencies `python-dotenv` and `elevenlabs`:
+## How to use it
+First, install the Python dependencies:
 ```sh
 pip install -r requirements.txt
 ```
 
-Then update the `.env` file by adding your API Key.
-📦 daily-stoic-alexa-skill
-┣ 📜 `.env`
-```
-API_KEY='your API key goes here'
-```
-
-Update the `main()` function in the `text-to-speech.py` file adding your language the run `python text-to-speech.py`:
+Then update the `main.py` setting the Audiobook title and its Youtube URL.
 ```
 def main():
-    language = 'portuguese'
-    create_folders_if_not_exists(language)
-
-    quotes = get_quotes_from_file('./assets/quotes/quotes-in-' + language + '.json')
-    process_data(quotes, language)
-
-    # add your code here!
-    language = 'your language' # TODO: add your language here
-    create_folders_if_not_exists(language)
-
-    quotes = get_quotes_from_file('./assets/quotes/quotes-in-' + language + '.json')
-    process_data(quotes, language)
+    audiobook_title = 'The Animal Farm'
+    youtube_url = 'https://www.youtube.com/watch?v=iosHzNmVYbA'
 ```
 
-#### Push a PR
-Finally, push a PR to this repo. I will merge it, add the new audio files to the S3 bucket, and make the Alexa Skill available in your country.
-Please specify the language you are adding, the country where you are from, and your name to the PR description!
+And finally run the script: `python main.py`
+
+# How it Works
+
+## YoutubeVideoHandler 🎧📖
+We are using the [pytube](https://github.com/pytube/pytube) library to download the Youtube data.
+We download the audio only and save the file as `youtube-content.mp4`.
+
+## The Speech to Text 🗣️👂✍🏻
+After download the audio file from YouTube we use the [OpenAI whisper](https://github.com/openai/whisper) to transcribe the audio to text.
+The result of this process is a JSON file saved as `audio-to-text.json`
+
+## Chapter Finder 🕵🏻‍♂️📋
+The chapter finder (`Audiobook.find_chapters()`) will loop through each segment resulted in the whisper transcription and look for the word "chapter". This should be done in a better way since currently I'm using a simple and dumb `if` statement to do so 😅
+
+# Contributing
+Check the open issues 😁
 
 ## Author
 👤 **Djonathan Krause**
