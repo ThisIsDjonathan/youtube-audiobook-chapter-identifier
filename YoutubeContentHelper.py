@@ -4,6 +4,8 @@ import os
 
 class YoutubeVideoHandler:
     def __init__(self, audiobook):
+        if not audiobook.title or not audiobook.url:
+            raise ValueError('Audiobook title or url is not set.')
         self.youtube = YouTube(audiobook.url)
         self.youtube.register_on_progress_callback(self.log_download_progress_function)
         self.audiobook_title = audiobook.title

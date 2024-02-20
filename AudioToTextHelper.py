@@ -5,6 +5,8 @@ import json
 
 class AudioToTextHelper:
     def __init__(self, audiobook):
+        if not audiobook.title or not audiobook.url:
+            raise ValueError('Audiobook title or url is not set.')
         self.audiobook_title = audiobook.title
         self.audiobook_directory = audiobook.directory
         self.audio_to_text_filename = 'audio-to-text.json'
@@ -35,9 +37,10 @@ class AudioToTextHelper:
 
     def save_text_to_file(self):
         try:
-            if self.audiobook_text is None or self.audiobook_text == '':
-                logging.error("No text to save.")
+            if self.audio_to_text_already_exists():
                 return
+            if self.audiobook_text is None or self.audiobook_text == '':
+                logging.info("No text to save.")
             audiobook_text_json = json.dumps(self.audiobook_text, indent=4, ensure_ascii=False)
 
             file_folder_full_path = './audiobooks/' + self.audiobook_title

@@ -5,10 +5,13 @@ import datetime
 
 class Audiobook:
     def __init__(self, title, url):
+        if not title or not url:
+            raise ValueError('Audiobook title or url is not set.')
         self.title = title
         self.url = url
         self.directory = self.make_dir()
         self.chapters = []
+        self.youtube_comment = ''
 
     def make_dir(self):
         try:
@@ -30,8 +33,7 @@ class Audiobook:
         self.find_chapters_from_audio_to_text_data(audio_to_text_data)
         self.calc_chapter_duration()
 
-        youtube_comment = self.parse_chapters_to_youtube_comment_format()
-        print('\nRESULT:\n' + youtube_comment)
+        self.youtube_comment = self.parse_chapters_to_youtube_comment_format()
 
     def get_audio_to_text_data(self):
         try:
@@ -80,9 +82,10 @@ class Audiobook:
                 'chapter_duration': chapter_duration
             })
 
-        youtube_comment_str = ''
+        youtube_comment_str = f'__________________\nResult for {self.title}\n{self.url}\n\n'
         for chapter in youtube_comment:
             youtube_comment_str += f"{chapter['chapter_title']} \t {chapter['chapter_start_at']} \t Duration: {chapter['chapter_duration']}\n"
+        youtube_comment_str += '\n\nby https://github.com/ThisIsDjonathan/youtube-audiobook-chapter-identifier\n__________________'
         return youtube_comment_str
 
     def seconds_to_time(self, seconds):

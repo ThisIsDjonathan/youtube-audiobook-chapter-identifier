@@ -17,6 +17,7 @@ def main():
 
     # 3 - Chapter Finder
     audiobook.find_chapters()
+    print(audiobook.youtube_comment)
     return
 
 if __name__ == "__main__":
