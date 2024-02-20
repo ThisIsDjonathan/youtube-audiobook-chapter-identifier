@@ -4,7 +4,9 @@ from Audiobook import Audiobook
 import logging
 
 def main():
-    audiobook = Audiobook('The Animal Farm', 'https://www.youtube.com/watch?v=iosHzNmVYbA')
+    audiobook_title = 'The Animal Farm'
+    youtube_url = 'https://www.youtube.com/watch?v=iosHzNmVYbA'
+    audiobook = Audiobook(audiobook_title, youtube_url)
 
     # 1 - Download from Youtube
     youtube = YoutubeVideoHandler(audiobook)
