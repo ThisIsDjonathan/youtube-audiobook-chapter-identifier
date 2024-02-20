@@ -40,7 +40,7 @@ This is the file structure:
 ┃&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ 🎧 `youtube-content.mp4`<br>
 ┃&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ 📋 `audio-to-text.json`<br>
 
-## How to use it
+# How to use it
 First, install the Python dependencies:
 ```sh
 pip install -r requirements.txt
