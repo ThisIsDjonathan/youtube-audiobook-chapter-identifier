@@ -1,7 +1,8 @@
 
 <h1 align="center">Welcome to youtube-audiobook-chapter-identifier 🎧📖 </h1>
 
-This project goal is to identify the chapters in an audiobook hosted on YouTube 🔎🕵🏻‍♂️📋
+This bot's goal is to identify the chapters in an audiobook hosted on YouTube 🔎🕵🏻‍♂️📋
+<p align="center"><img src="https://github.com/ThisIsDjonathan/youtube-audiobook-chapter-identifier/assets/8337704/63c6927d-9fd7-4d8c-8899-23a6377b61fc" alt="bot-image" width="300"></p>
 
 # Result Example
 ```
